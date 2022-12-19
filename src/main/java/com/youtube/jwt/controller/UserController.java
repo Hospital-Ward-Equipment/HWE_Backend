@@ -1,8 +1,10 @@
 package com.youtube.jwt.controller;
 
+import com.youtube.jwt.entity.CUser;
 import com.youtube.jwt.entity.Product;
 import com.youtube.jwt.entity.User;
 import com.youtube.jwt.service.UserService;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,7 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -48,6 +55,35 @@ public class UserController {
 
         return userService.registerNewUser(user);
 
+    }
+    @PostMapping({"/registerNewUsersList"})
+    public void registerNewUsersList() throws IOException {
+        Path path = Path.of("src","main","resources","Users.csv");
+        Files.lines(path)
+                .skip(1)
+                .map(UserController::getCUser)
+                .forEach((user)-> {
+                    System.out.println(user);
+                    userService.registerNewUser(user);
+                });
+
+    }
+    private static User getCUser(String line) {
+        String[] fields=line.split(",");
+        if(fields.length!=5)
+            throw new RuntimeException("Invalid CSV line - " + line);
+        String userName=fields[0];
+        String userFirstName=fields[1];
+        String userLastName=fields[2];
+        String userPassword=fields[3];
+        String usermail=fields[4];
+        User user= new User();
+        user.setUserName(userName);
+        user.setUserFirstName(userFirstName);
+        user.setUserLastName(userLastName);
+        user.setUserPassword(userPassword);
+        user.setUsermail(usermail);
+        return user;
     }
 
     @GetMapping({"/forAdmin"})
