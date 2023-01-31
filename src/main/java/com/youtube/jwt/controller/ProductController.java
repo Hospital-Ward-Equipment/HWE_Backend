@@ -30,11 +30,7 @@ public class ProductController {
         System.out.println("Get all");
         return productService.getProduct();
     }
-    @GetMapping("/getallsubcoporate/{id}")
-    public void getsubcoporatelist(){
-        System.out.println("Get getallsubcoporate");
-        productService.getallsubcoporate();
-    }
+
     @PostMapping("/AddProduct")
     public Product addProduct(@RequestBody @Valid Product product){
         return productService.addProduct(product);
@@ -50,7 +46,6 @@ public class ProductController {
     public Product updateProduct(@RequestBody Product product,
                                  @PathVariable("id") int productId)
     {
-
         return productService.updateProduct(
                 product, productId);
     }

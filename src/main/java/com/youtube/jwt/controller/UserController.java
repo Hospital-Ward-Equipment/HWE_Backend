@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 @RestController
@@ -38,11 +40,12 @@ public class UserController {
     @Autowired
     private JavaMailSender javaMailSender;
 
-
-    public void sendSimpleEmail(String toEmail,
-                                String subject,
-                                String body
+    @Async
+    public Future<Void> sendSimpleEmail(String toEmail,
+                                        String subject,
+                                        String body
     ) {
+        System.out.println("Email is call");
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("akiladissanayaka255@gmail.com");
         message.setTo(toEmail);
@@ -50,12 +53,13 @@ public class UserController {
         message.setSubject(subject);
         javaMailSender.send(message);
         System.out.println("Mail Send...");
-
+        return new AsyncResult<Void>(null);
 
     }
     @PostMapping({"/registerNewUser"})
     public User registerNewUser(@RequestBody User user) {
-        sendSimpleEmail(user.getUsermail(),"Test subject","Successfully registerd");
+//        sendSimpleEmail(user.getUsermail(),"Test subject","Successfully registerd");
+        System.out.println("Email is end call");
 
         return userService.registerNewUser(user);
 
