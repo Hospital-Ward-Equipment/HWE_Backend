@@ -21,7 +21,11 @@ public class ProductController {
         System.out.println("Get all");
         return productService.getProduct();
     }
-
+    @GetMapping("/getallsubcoporate/{id}")
+    public void getsubcoporatelist(){
+        System.out.println("Get getallsubcoporate");
+        productService.getallsubcoporate();
+    }
     @PostMapping("/AddProduct")
     public Product addProduct(@RequestBody Product product){
         return productService.addProduct(product);

@@ -1,11 +1,12 @@
 package com.youtube.jwt.entity;
 
 public class JwtResponse {
-
+    private Boolean success;
     private User user;
     private String jwtToken;
 
-    public JwtResponse(User user, String jwtToken) {
+    public JwtResponse(User user, String jwtToken,Boolean success) {
+        this.success=success;
         this.user = user;
         this.jwtToken = jwtToken;
     }
@@ -22,7 +23,17 @@ public class JwtResponse {
         return jwtToken;
     }
 
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
+    }
+
     public void setJwtToken(String jwtToken) {
         this.jwtToken = jwtToken;
     }
+
+
 }

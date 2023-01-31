@@ -44,6 +44,11 @@ public class ProductService {
         return productRepository.save(depDB);
     }
 
+    public Void getallsubcoporate() {
+        productRepository.findAll();
+        return null;
+    }
+
     public List<Product> getProduct() {
         return (List<Product>) productRepository.findAll();
     }

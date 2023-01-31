@@ -8,6 +8,8 @@ import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
+@EnableAsync
 public class UserController {
 
     @Autowired
@@ -34,6 +37,7 @@ public class UserController {
     }
     @Autowired
     private JavaMailSender javaMailSender;
+
 
     public void sendSimpleEmail(String toEmail,
                                 String subject,
