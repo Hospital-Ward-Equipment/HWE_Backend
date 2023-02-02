@@ -4,10 +4,11 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "Product")
-public class Product {
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -29,8 +30,20 @@ public class Product {
     @Min(value = 0, message = "Value must be positive")
     private int broken;
 
+    @Column(name="ward_id")
+    private int wardId;
+
     public Product() {
     }
+
+    public int getWardId() {
+        return wardId;
+    }
+
+    public void setWardId(int wardId) {
+        this.wardId = wardId;
+    }
+
     public int getId() {
         return id;
     }

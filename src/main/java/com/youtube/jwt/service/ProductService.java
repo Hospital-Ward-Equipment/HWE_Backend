@@ -110,7 +110,7 @@ public class ProductService {
             LOGGER.info("Successfully get product");
             List<Product> products=new ArrayList<Product>(productRepository.findAll());
 
-            GenPDF(products);
+//            GenPDF(products);
             return new ResponseEntity<List<Product>>(productRepository.findAll(), HttpStatus.OK);
 //            return products;
         }
