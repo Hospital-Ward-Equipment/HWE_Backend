@@ -67,8 +67,8 @@ public class ProductService {
         try{
             LOGGER.info("Successfully update the product");
             Product depDB = productRepository.findById(productId).get();
-            int newQty= depDB.getQty()+qty;
-            depDB.setQty(newQty);
+            int newQty= depDB.getAllCount()+qty;
+            depDB.setAllCount(newQty);
             return productRepository.save(depDB);
         }
         catch (Exception e){
@@ -87,7 +87,7 @@ public class ProductService {
 
             String result = products.stream()
                     .map(n -> {
-                        return String.valueOf(n.getName()) +" - "+String.valueOf(n.getQty());
+                        return String.valueOf(n.getName()) +" - "+String.valueOf(n.getAllCount());
                     })
                     .collect(Collectors.joining("\n"));
             Paragraph paragraph=new Paragraph(result);
@@ -110,7 +110,7 @@ public class ProductService {
             LOGGER.info("Successfully get product");
             List<Product> products=new ArrayList<Product>(productRepository.findAll());
 
-            GenPDF(products);
+//            GenPDF(products);
             return new ResponseEntity<List<Product>>(productRepository.findAll(), HttpStatus.OK);
 //            return products;
         }
@@ -147,11 +147,18 @@ public class ProductService {
         try{
             LOGGER.info("Successfully update product");
             Product depDB = productRepository.findById(productId).get();
+
             if (Objects.nonNull(product.getName()) && !"".equalsIgnoreCase(product.getName())) {
                 depDB.setName(product.getName());
             }
-            if (Objects.nonNull(product.getCategory()) && !"".equalsIgnoreCase(product.getCategory())) {
-                depDB.setCategory(product.getCategory());
+            if (Objects.nonNull(product.getAllCount()) && !"".equals(product.getAllCount())) {
+                depDB.setAllCount(product.getAllCount());
+            }
+            if (Objects.nonNull(product.getUsable()) && !"".equals(product.getUsable())) {
+                depDB.setUsable(product.getUsable());
+            }
+            if (Objects.nonNull(product.getBroken()) && !"".equals(product.getBroken())) {
+                depDB.setBroken(product.getBroken());
             }
             return productRepository.save(depDB);
         }

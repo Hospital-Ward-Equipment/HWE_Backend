@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class User {
+public class CUser {
 
 
     @Id
@@ -14,8 +14,15 @@ public class User {
     private String userPassword;
     private String usermail;
 
-    public User() {
+    public CUser() {
 
+    }
+    public CUser(String userName, String userFirstName, String userLastName, String userPassword, String usermail) {
+        this.userName = userName;
+        this.userFirstName = userFirstName;
+        this.userLastName = userLastName;
+        this.userPassword = userPassword;
+        this.usermail = usermail;
     }
 
     @Override
@@ -29,7 +36,6 @@ public class User {
                 '}';
     }
 
-
     public String getUsermail() {
         return usermail;
     }
@@ -38,16 +44,8 @@ public class User {
         this.usermail = usermail;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "USER_ROLE",
-            joinColumns = {
-                    @JoinColumn(name = "USER_ID")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "ROLE_ID")
-            }
-    )
-    private Set<Role> role;
+
+
 
     public String getUserName() {
         return userName;
@@ -79,13 +77,5 @@ public class User {
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
-    }
-
-    public Set<Role> getRole() {
-        return role;
-    }
-
-    public void setRole(Set<Role> role) {
-        this.role = role;
     }
 }

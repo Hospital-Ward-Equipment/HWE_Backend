@@ -20,6 +20,7 @@ import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 @RestController
+@RequestMapping("api/product")
 public class ProductController {
 
     @Autowired
@@ -46,7 +47,6 @@ public class ProductController {
     public Product updateProduct(@RequestBody Product product,
                                  @PathVariable("id") int productId)
     {
-
         return productService.updateProduct(
                 product, productId);
     }
