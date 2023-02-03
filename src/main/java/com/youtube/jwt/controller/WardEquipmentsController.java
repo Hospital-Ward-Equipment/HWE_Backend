@@ -3,6 +3,7 @@ package com.youtube.jwt.controller;
 import com.youtube.jwt.entity.Hwe_equipments;
 import com.youtube.jwt.entity.Hwe_ward_equipments;
 import com.youtube.jwt.payload.BrokenUsableUpdateRequest;
+import com.youtube.jwt.payload.WardEquipmentRequest;
 import com.youtube.jwt.service.WardEquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +28,8 @@ public class WardEquipmentsController {
     }
 
     @PostMapping("/AddWardEquipment")
-    public Hwe_ward_equipments addWardEquipment(@RequestBody @Valid Hwe_ward_equipments wardEquipments){
-        return wardEquipmentService.addWardEquipment(wardEquipments);
+    public Long addWardEquipment(@RequestBody @Valid WardEquipmentRequest wardEquipments){
+          return wardEquipmentService.addWardEquipment(wardEquipments);
     }
 
     @DeleteMapping("deleteWardEquipment/{id}")

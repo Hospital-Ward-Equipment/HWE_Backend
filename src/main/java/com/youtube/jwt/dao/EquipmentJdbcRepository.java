@@ -2,7 +2,9 @@ package com.youtube.jwt.dao;
 
 import com.youtube.jwt.dto.EquipmentResponse;
 import com.youtube.jwt.entity.Hwe_ward_equipments;
+import com.youtube.jwt.payload.BrokenChartResponse;
 import com.youtube.jwt.payload.BrokenUsableUpdateRequest;
+import com.youtube.jwt.payload.WardEquipmentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,6 +26,13 @@ public class EquipmentJdbcRepository {
             "Inner join hwe_wards hw on hw.id=hwe.hwe_wards\n" +
             "INNER JOIN hwe_equipments he on he.id=hwe.hwe_equipments ";
     private static final String UPDATE_BROKEN_USABLE_QTY="UPDATE hwe_ward_equipments SET broken = ?, usable = ? WHERE (ward_equipment_id = ?)";
+    private static final String GET_BROKEN_SUM_FOR_CHART="SELECT he.id, he.name,COALESCE(sum(hwe.broken),0) as Broken_sum,COALESCE(sum(hwe.usable),0) as Usble_sum,he.count " +
+            "FROM hwe_equipments he " +
+            "LEFT JOIN hwe_ward_equipments hwe " +
+            "ON he.id=hwe.hwe_equipments " +
+            "GROUP BY he.id";
+
+    private static final String INSERT_DATA_TO_WARD_EQUIPMENT_TABLE="INSERT INTO hwe_ward_equipments (broken, usable, hwe_equipments, hwe_wards) VALUES (?, ?, ?, ?)";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -45,11 +54,28 @@ public class EquipmentJdbcRepository {
 
                 );
     }
+    public List<BrokenChartResponse> getequipmentWithWard() {
+        return jdbcTemplate
+                .query(GET_BROKEN_SUM_FOR_CHART,(rs, rowNum) ->
+                        new BrokenChartResponse(
+                                rs.getInt("id"),
+                                rs.getString("name"),
+                                rs.getInt("Broken_sum"),
+                                rs.getInt(("Usble_sum")),
+                                rs.getInt("count")
+                        )
+
+                );
+    }
 
     public Long updateEquipmentBrokenUsable(BrokenUsableUpdateRequest request) {
         MapSqlParameterSource namedParameters =new MapSqlParameterSource();
 
         int rowsAffected= jdbcTemplate.update(UPDATE_BROKEN_USABLE_QTY,new Object[] {request.getBroken(), request.getUsable(),request.getId()});
         return (long) rowsAffected;
+    }
+    public Long insertToWardEquipment(WardEquipmentRequest request) {
+        int result=jdbcTemplate.update(INSERT_DATA_TO_WARD_EQUIPMENT_TABLE, new Object[]{request.getBroken(),request.getUsable(),request.getHwe_equipments(),request.getHwe_wards()});
+        return (long) result;
     }
 }

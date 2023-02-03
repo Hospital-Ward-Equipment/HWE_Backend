@@ -8,6 +8,7 @@ import com.youtube.jwt.entity.Hwe_ward_equipments;
 import com.youtube.jwt.entity.Product;
 import com.youtube.jwt.payload.ApiResponse;
 import com.youtube.jwt.payload.BrokenUsableUpdateRequest;
+import com.youtube.jwt.payload.WardEquipmentRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,8 @@ public class WardEquipmentService {
     private WardRepository wardRepository;
 
 
+
+
     public ResponseEntity getWardEquipment() throws FileNotFoundException {
 
         try{
@@ -63,11 +66,11 @@ public class WardEquipmentService {
         }
 
     }
-    public Hwe_ward_equipments addWardEquipment(Hwe_ward_equipments wardEquipments) {
+    public Long addWardEquipment(WardEquipmentRequest wardEquipments) {
 
         try{
             LOGGER.info("Successfully add Ward");
-            return wardEquipmentRepository.save(wardEquipments);
+            return equipmentJdbcRepository.insertToWardEquipment(wardEquipments);
 
         }
         catch (Exception e){

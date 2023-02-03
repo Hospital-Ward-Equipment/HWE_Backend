@@ -1,6 +1,7 @@
 package com.youtube.jwt.controller;
 
 import com.youtube.jwt.entity.Hwe_equipments;
+import com.youtube.jwt.payload.BrokenChartResponse;
 import com.youtube.jwt.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,10 @@ public class EquipmentController {
     public ResponseEntity<List<Hwe_equipments>> getEquipment() throws FileNotFoundException {
         System.out.println("Get all");
         return equipmentService.getequipment();
+    }
+    @GetMapping("/getBrokenDetailsForChart")
+    public ResponseEntity<List<BrokenChartResponse>> getBrokenDetailsForChart() throws FileNotFoundException {
+        return equipmentService.getBrokenDetailsForChart();
     }
 
     @GetMapping("/getallWithWard")
