@@ -11,6 +11,7 @@ import com.youtube.jwt.entity.Hwe_wards;
 import com.youtube.jwt.entity.Product;
 import com.youtube.jwt.payload.ApiResponse;
 import com.youtube.jwt.payload.BrokenChartResponse;
+import com.youtube.jwt.payload.BrokenWardEquipmentChart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,19 @@ public class EquipmentService {
         try{
             LOGGER.info("Successfully get equipment details");
             return new ResponseEntity<List<BrokenChartResponse>>(equipmentJdbcRepository.getequipmentWithWard(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            LOGGER.error(">>> Unable to get product");
+            LOGGER.error("Context", e);
+            return ResponseEntity.ok(new ApiResponse(false, UNAUTHORISED_MESSAGE));
+        }
+
+    }
+    public ResponseEntity getBrokenCountforWard() throws FileNotFoundException {
+
+        try{
+            LOGGER.info("Successfully get equipment details");
+            return new ResponseEntity<List<BrokenWardEquipmentChart>>(equipmentJdbcRepository.getBrokenCountforWard(), HttpStatus.OK);
         }
         catch (Exception e){
             LOGGER.error(">>> Unable to get product");
