@@ -2,6 +2,7 @@ package com.youtube.jwt.controller;
 
 import com.youtube.jwt.entity.Hwe_equipments;
 import com.youtube.jwt.payload.BrokenChartResponse;
+import com.youtube.jwt.payload.BrokenWardEquipmentChart;
 import com.youtube.jwt.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,11 @@ public class EquipmentController {
     @GetMapping("/getBrokenDetailsForChart")
     public ResponseEntity<List<BrokenChartResponse>> getBrokenDetailsForChart() throws FileNotFoundException {
         return equipmentService.getBrokenDetailsForChart();
+    }
+
+    @GetMapping("/getBrokenCountforWard")
+    public ResponseEntity<List<BrokenWardEquipmentChart>> getBrokenCountforWard() throws FileNotFoundException {
+        return equipmentService.getBrokenCountforWard();
     }
 
     @GetMapping("/getallWithWard")

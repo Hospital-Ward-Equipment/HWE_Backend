@@ -4,6 +4,7 @@ import com.youtube.jwt.dto.EquipmentResponse;
 import com.youtube.jwt.entity.Hwe_ward_equipments;
 import com.youtube.jwt.payload.BrokenChartResponse;
 import com.youtube.jwt.payload.BrokenUsableUpdateRequest;
+import com.youtube.jwt.payload.BrokenWardEquipmentChart;
 import com.youtube.jwt.payload.WardEquipmentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,7 +34,7 @@ public class EquipmentJdbcRepository {
             "GROUP BY he.id";
 
     private static final String INSERT_DATA_TO_WARD_EQUIPMENT_TABLE="INSERT INTO hwe_ward_equipments (broken, usable, hwe_equipments, hwe_wards) VALUES (?, ?, ?, ?)";
-
+    private static final String WARD_BROKEN_COUNT_FOR_CHART="select hw.id,hw.name,COALESCE(sum(hwe.broken),0) as broken from hwe_wards hw left join hwe_ward_equipments hwe on hw.id=hwe.hwe_wards group by hw.id";
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -63,6 +64,17 @@ public class EquipmentJdbcRepository {
                                 rs.getInt("Broken_sum"),
                                 rs.getInt(("Usble_sum")),
                                 rs.getInt("count")
+                        )
+
+                );
+    }
+    public List<BrokenWardEquipmentChart> getBrokenCountforWard() {
+        return jdbcTemplate
+                .query(WARD_BROKEN_COUNT_FOR_CHART,(rs, rowNum) ->
+                        new BrokenWardEquipmentChart(
+                                rs.getInt("id"),
+                                rs.getString("name"),
+                                rs.getInt("broken")
                         )
 
                 );
