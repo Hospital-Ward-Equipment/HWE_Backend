@@ -37,6 +37,7 @@ public class JwtService implements UserDetailsService {
         authenticate(userName, userPassword);
 
         UserDetails userDetails = loadUserByUsername(userName);
+
         String newGeneratedToken = jwtUtil.generateToken(userDetails);
 
         User user = userDao.findById(userName).get();
@@ -48,6 +49,12 @@ public class JwtService implements UserDetailsService {
         User user = userDao.findById(username).get();
 
         if (user != null) {
+            System.out.println("+++++++++++++++++++++++++++++++++++++++++++");
+            System.out.println("user.getUserName()"+user.getUserName());
+            System.out.println("user.getUserPassword()"+user.getUserPassword());
+            System.out.println("getAuthority(user)"+getAuthority(user));
+            System.out.println("+++++++++++++++++++++++++++++++++++++++++++");
+
             return new org.springframework.security.core.userdetails.User(
                     user.getUserName(),
                     user.getUserPassword(),

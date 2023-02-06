@@ -5,11 +5,27 @@ import java.util.List;
 public class ApiResponse {
     private Boolean success;
     private String message;
+    private String role;
     private List<?> list;
 
+    public ApiResponse(Boolean success, String message, String role) {
+        this.success = success;
+        this.message = message;
+        this.role = role;
+    }
     public ApiResponse(Boolean success, String message) {
         this.success = success;
         this.message = message;
+    }
+
+
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public ApiResponse(Boolean success, List<?> list) {
